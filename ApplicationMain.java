@@ -39,12 +39,14 @@ public class ApplicationMain {
 
                 System.out.println("What will you do?");
 
-                if(!firstTurn) {
+                if(!firstTurn) 
+                {
                     // after the first turn, player may pick from tile stack or last player's discard
                     System.out.println("1. Pick From Tiles");
                     System.out.println("2. Pick From Discard");
                 }
-                else{
+                else
+                {
                     // on first turn the starting player does not pick up new tile
                     System.out.println("1. Discard Tile");
                 }
@@ -65,39 +67,50 @@ public class ApplicationMain {
                     // display the hand after picking up new tile
                     game.displayCurrentPlayersTiles();
                 }
-                else{
+                else
+                {
                     // after first turn it is no longer the first turn
                     firstTurn = false;
                 }
 
                 gameContinues = !game.didGameFinish() && game.hasMoreTileInStack();
 
-                if(gameContinues) {
+                if(gameContinues) 
+                {
                     // if game continues we need to discard a tile using the given index by the player
                     System.out.println("Which tile you will discard?");
                     System.out.print("Discard the tile in index: ");
                     playerChoice = sc.nextInt();
 
                     // TODO: make sure the given index is correct, should be 0 <= index <= 14
+                    if(playerChoice >= 0 && playerChoice <= 14)
+                    {
+                        game.discardTile(playerChoice);
+                        game.passTurnToNextPlayer();
+                    }
 
-                    game.discardTile(playerChoice);
-                    game.passTurnToNextPlayer();
                 }
-                else{
-                    if(!game.didGameFinish()) {
+                else
+                {
+                    if(!game.didGameFinish()) 
+                    {
                         // if we finish the hand we win
                         System.out.println("Congratulations, you win!");    
                     }
-                    else{
+                    else
+                    {
                         // TODO: the game ended with no more tiles in the stack
                         // determine the winner based on longest chain lengths of the players
                         // use getPlayerWithHighestLongestChain method of game for this task
+                        System.out.println(game.getPlayerWithHighestLongestChain() + " wins.");
                     }
                 }
             }
-            else{
+            else
+            {
                 // this is the computer player's turn
-                if(devModeOn) {
+                if(devModeOn) 
+                {
                     game.displayCurrentPlayersTiles();
                 }
 
@@ -106,20 +119,25 @@ public class ApplicationMain {
 
                 gameContinues = !game.didGameFinish() && game.hasMoreTileInStack();
 
-                if(gameContinues) {
+                if(gameContinues)
+                {
                     // if game did not end computer should discard
                     game.discardTileForComputer();
                     game.passTurnToNextPlayer();
                 }
-                else{
-                    if(!game.didGameFinish()) {
+                else
+                {
+                    if(!game.didGameFinish()) 
+                    {
                         // current computer character wins
                         System.out.println(game.getCurrentPlayerName() + " wins.");
                     }
-                    else{
+                    else
+                    {
                         // TODO: the game ended with no more tiles in the stack
                         // determine the winner based on longest chain lengths of the players
                         // use getPlayerWithHighestLongestChain method of game for this task
+                        System.out.println(game.getPlayerWithHighestLongestChain() + " wins.");
                     }
                 }
             }
