@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class SimplifiedOkeyGame {
 
     Player[] players;
@@ -41,6 +43,7 @@ public class SimplifiedOkeyGame {
      * it should return the toString method of the tile so that we can print what we picked
      */
     public String getLastDiscardedTile() {
+
         return null;
     }
 
@@ -58,7 +61,15 @@ public class SimplifiedOkeyGame {
      * TODO: should randomly shuffle the tiles array before game starts
      */
     public void shuffleTiles() {
+        Random rand = new Random();
 
+        for (int i = tiles.length - 1; i > 0; i--) 
+        {
+            int j = rand.nextInt(i + 1);
+            Tile temp = tiles[i];
+            tiles[i] = tiles[j];
+            tiles[j] = temp;
+        }
     }
 
     /*
