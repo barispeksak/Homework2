@@ -59,7 +59,7 @@ public class Tile {
      */
     public boolean canFormChainWith(Tile t) 
     {
-        if(Math.abs(t.getValue() - this.value == 1))
+        if(Math.abs(t.getValue() - this.value) == 1)
         {
             return true;
         }
