@@ -77,16 +77,25 @@ public class ApplicationMain {
 
                 if(gameContinues) 
                 {
-                    // if game continues we need to discard a tile using the given index by the player
-                    System.out.println("Which tile you will discard?");
-                    System.out.print("Discard the tile in index: ");
-                    playerChoice = sc.nextInt();
+                    boolean cont = false;
+                    while(!cont){
+                        // if game continues we need to discard a tile using the given index by the player
+                        System.out.println("Which tile you will discard?");
+                        System.out.print("Discard the tile in index: ");
+                        playerChoice = sc.nextInt();
 
-                    // TODO: make sure the given index is correct, should be 0 <= index <= 14
-                    if(playerChoice >= 0 && playerChoice <= 14)
-                    {
-                        game.discardTile(playerChoice);
-                        game.passTurnToNextPlayer();
+                        // TODO: make sure the given index is correct, should be 0 <= index <= 14
+                        
+                        if(playerChoice >= 0 && playerChoice <= 14)
+                        {
+                            game.discardTile(playerChoice);
+                            game.passTurnToNextPlayer();
+                            cont = true;
+                        }
+                        else
+                        {
+                            System.out.println("there is not that card!");
+                        }
                     }
 
                 }
