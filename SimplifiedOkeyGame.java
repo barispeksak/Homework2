@@ -157,7 +157,7 @@ public class SimplifiedOkeyGame {
      * you may choose based on how useful each tile is
      */
     public void discardTileForComputer() {
-
+        
     }
 
     /*
