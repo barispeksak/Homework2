@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class SimplifiedOkeyGame {
@@ -109,9 +110,28 @@ public class SimplifiedOkeyGame {
      * if multiple players have the same length may return multiple players
      */
     public Player[] getPlayerWithHighestLongestChain() {
-        Player[] winners = new Player[1];
+        
+        ArrayList<Player> winners = new ArrayList<>();
+        int longestChain = 0;
 
-        return winners;
+        for (int i = 0; i < players.length;  i++) 
+        {
+            int playerChainLength = players[i].findLongestChain();
+            if (playerChainLength > longestChain) 
+            {
+                longestChain = playerChainLength;
+            }
+        }
+
+        for (int i = 0; i < players.length;  i++) 
+        {
+            if (players[i].findLongestChain() == longestChain) 
+            {
+                winners.add(players[i]);
+            }
+        }
+
+        return winners.toArray(new Player[0]);
     }
     
     /*
