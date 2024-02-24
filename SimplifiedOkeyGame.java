@@ -157,7 +157,7 @@ public class SimplifiedOkeyGame {
      * you may choose based on how useful each tile is
      */
     public void discardTileForComputer() {
-
+        
     }
 
     /*
@@ -166,7 +166,7 @@ public class SimplifiedOkeyGame {
      * that player's tiles
      */
     public void discardTile(int tileIndex) {
-
+        this.lastDiscardedTile = players[getCurrentPlayerIndex()].getAndRemoveTile(tileIndex);
     }
 
     public void displayDiscardInformation() {
