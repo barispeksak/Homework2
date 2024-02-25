@@ -173,19 +173,19 @@ public class SimplifiedOkeyGame {
 
         if(checkİfUseful(currentPlayer))
         {
-            currentPlayer.addTile(tiles[0]);
+            currentPlayer.addTile(lastDiscardedTile);
         }
         else
         {
-            currentPlayer.addTile(lastDiscardedTile);
+            currentPlayer.addTile(tiles[0]);
         }
   
     }
-    
+
     public boolean checkİfUseful (Player currentPlayer)
     {
         int preLongestChain = currentPlayer.findLongestChain();
-        currentPlayer.addTile(tiles[0]);
+        currentPlayer.addTile(lastDiscardedTile);
         int currentLongestChain = currentPlayer.findLongestChain();
         currentPlayer.getAndRemoveTile(currentPlayer.playerTiles.length - 1 );
 
