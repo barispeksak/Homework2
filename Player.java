@@ -40,27 +40,25 @@ public class Player {
     public int findLongestChain()
     {
         int longestChain = 1;
-
         int currentChain = 1;
 
-        for (int i = 0; i < playerTiles.length-1; i++)
-        {
-            if(playerTiles[i].value + 1 == playerTiles[i+1].value)
-            {
-                currentChain++;
+    for (int i = 0; i < numberOfTiles - 1; i++) {
+        if (playerTiles[i].getValue() + 1 == playerTiles[i + 1].getValue()) {
+            currentChain++;
+        } else {
+            if (currentChain > longestChain) {
+                longestChain = currentChain;
             }
-
-            else if(playerTiles[i].value + 1 != playerTiles[i+1].value)
-            {
-                if(currentChain > longestChain)
-                {
-                    longestChain = currentChain;
-                }
-                currentChain = 0;
-            }
+            currentChain = 1; // Reset currentChain
         }
-        
-        return longestChain;
+    }
+
+    // Check if the last tile extends the current longest chain
+    if (currentChain > longestChain) {
+        longestChain = currentChain;
+    }
+
+    return longestChain;
     }
 
     /*
@@ -85,25 +83,45 @@ public class Player {
      * then shift the remaining tiles to the right by one
      */
     //NOTE: DONE
-    public void addTile(Tile t) //be careful the length is 14
-    {
-        playerTiles = Arrays.copyOf(playerTiles, playerTiles.length + 1);
-        playerTiles[playerTiles.length] = t;
+    public void addTile(Tile t) {
+        if (numberOfTiles >= playerTiles.length) {
+            System.out.println("Cannot add more tiles. Player's hand is full.");
+            return;
+        }
+    
+        int insertIndex = numberOfTiles; // Initialize insertIndex to the end of the array
+        for (int i = 0; i < numberOfTiles; i++) {
+            if (t.compareTo(playerTiles[i]) < 0) {
+                insertIndex = i;
+                break;
+            }
+        }
+    
+        // Shift tiles to the right to make space for the new tile
+        for (int i = numberOfTiles; i > insertIndex; i--) {
+            playerTiles[i] = playerTiles[i - 1];
+        }
+    
+        // Insert the new tile at the correct position
+        playerTiles[insertIndex] = t;
+        numberOfTiles++;
+    }
 
-        for (int i = 1; i < playerTiles.length; i++)
+    public void sorting(Tile[] playerTiles)
+    {
+        int n = playerTiles.length;
+        for (int i = 1; i < n; ++i) 
         {
-            int key = playerTiles[i].value;
+            Tile key = playerTiles[i];
             int j = i - 1;
 
-            while (j >= 0 && playerTiles[j].value > key)
+            while (j >= 0 && playerTiles[j].getValue() > key.getValue()) 
             {
                 playerTiles[j + 1] = playerTiles[j];
                 j = j - 1;
             }
-
-            playerTiles[j + 1].value = key;
+            playerTiles[j + 1] = key;
         }
-        numberOfTiles++;
     }
 
     /*

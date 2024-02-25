@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class SimplifiedOkeyGame {
@@ -64,7 +65,7 @@ public class SimplifiedOkeyGame {
         Tile shortenedTiles[] = new Tile[this.tiles.length -1];
         for( int m = 0 ; m < shortenedTiles.length ; m++)
         {
-            shortenedTiles[m] = this.tiles[m];
+            shortenedTiles[m] = this.tiles[m + 1];
 
         }
         this.tiles = shortenedTiles ;  
@@ -87,11 +88,14 @@ public class SimplifiedOkeyGame {
      * and it will be given to the current player
      * returns the toString method of the tile so that we can print what we picked
      */
-    public String getTopTile() 
-    {
-        players[this.getCurrentPlayerIndex()].addTile(tiles[0]);
-        return tiles[0].toString();
-
+    public String getTopTile() {
+        if (tiles.length > 0) {
+            players[this.getCurrentPlayerIndex()].addTile(tiles[0]);
+            return tiles[0].toString();
+        } else {
+            System.out.println("No more tiles in the stack.");
+            return null; // or you can return a specific string indicating no tile available
+        }
     }
 
     /*
@@ -114,16 +118,19 @@ public class SimplifiedOkeyGame {
      * finished the game. use checkWinning method of the player class to determine
      */
     public boolean didGameFinish() {
-
-            if(players[this.getCurrentPlayerIndex()].checkWinning())
-            {
+        if (!hasMoreTileInStack()) {
+            // No more tiles in the stack
+            return true;
+        }
+        for (Player player : players) {
+            if (player.checkWinning()) {
+                // Player has won
                 return true;
             }
-            else
-            {
-                return false;
-            }
+        }
+        return false;
     }
+    
 
     /* TODO: finds the player who has the highest number for the longest chain
      * if multiple players have the same length may return multiple players
@@ -167,36 +174,52 @@ public class SimplifiedOkeyGame {
      * you should check if getting the discarded tile is useful for the computer
      * by checking if it increases the longest chain length, if not get the top tile
      */
-    public void pickTileForComputer()
-    {
+    public void pickTileForComputer() {
         Player currentPlayer = players[this.getCurrentPlayerIndex()];
-
-        if(checkİfUseful(currentPlayer))
-        {
+    
+        if (checkIfUseful(currentPlayer)) {
             currentPlayer.addTile(lastDiscardedTile);
+        } else {
+            if (tiles.length > 0) {
+                currentPlayer.addTile(tiles[0]);
+                tiles = Arrays.copyOfRange(tiles, 1, tiles.length);
+                tileCount--;
+            } else {
+                handleEndOfGame(); // Handle end of game
+                return; // Exit the method to prevent further processing
+            }
         }
-        else
-        {
-            currentPlayer.addTile(tiles[0]);
-        }
-  
+        passTurnToNextPlayer(); // Move to the next player
     }
+    
+    private void handleEndOfGame() {
+        System.out.println("No more tiles in the stack. Game over.");
+    
+        // Display longest chains of all players
+        for (Player player : players) {
+            System.out.println(player.getName() + "'s longest chain: " + player.findLongestChain());
+        }
+    
+        // Find the player with the highest longest chain
+        Player[] winners = getPlayerWithHighestLongestChain();
+        if (winners.length == 1) {
+            System.out.println("Winner: " + winners[0].getName());
+        } else {
+            System.out.println("It's a tie between the following players:");
+            for (Player winner : winners) {
+                System.out.println(winner.getName());
+            }
+        }
+    }
+    
 
-    public boolean checkİfUseful (Player currentPlayer)
-    {
+    public boolean checkIfUseful(Player currentPlayer) {
         int preLongestChain = currentPlayer.findLongestChain();
         currentPlayer.addTile(lastDiscardedTile);
         int currentLongestChain = currentPlayer.findLongestChain();
-        currentPlayer.getAndRemoveTile(currentPlayer.playerTiles.length - 1 );
+        currentPlayer.getAndRemoveTile(currentPlayer.getTiles().length - 1);
 
-        if(currentLongestChain > preLongestChain)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }   
+        return currentLongestChain > preLongestChain;
     }
 
 
